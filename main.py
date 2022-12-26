@@ -2,6 +2,9 @@ import pandas as pd
 import numpy as np
 import cv2
 import matplotlib.pyplot as plt
+import PIL.Image
+import PIL.ImageDraw
+import face_recognition
 
 from glob import glob
 
@@ -60,17 +63,32 @@ def display_cv2_img(img, figsize=(10, 10)):
     plt.tight_layout()
     plt.show()
 
+def get_one_frame():
 
-# Pull frame 1035
+    n_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
 
-n_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+    for frame in range(n_frames):
+        ret, img = cap.read()
+        if ret == False:
+            break
+        if frame == 150: # 150, 210, 450, 900   # get one frame, number 600 for example
+            break
 
-img_idx = 0
-for frame in range(n_frames):
-    ret, img = cap.read()
-    if ret == False:
-        break
-    if frame == 600:    # get one frame
-        break
+    faces = face_recognition.face_locations(img)
+    face_locations = face_recognition.face_locations(img, model="cnn")
+    print(face_locations)
+    x1 = face_locations[0][3]
+    y1 = face_locations[0][2]
 
-display_cv2_img(img)
+    x2 = face_locations[0][1]
+    y2 = face_locations[0][0]
+
+    pt1 = (x1, y1)
+    pt2 = (x2, y2)
+    cv2.rectangle(img, pt1, pt2, (0, 0, 255), 3)
+
+    display_cv2_img(img)
+
+
+get_one_frame()
+
