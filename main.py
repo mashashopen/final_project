@@ -17,12 +17,14 @@ import subprocess
 cap = cv2.VideoCapture('world.mp4')
 num_of_frames = cap.get(cv2.CAP_PROP_FRAME_COUNT)
 
+# num of frames per second
+fps = cap.get(cv2.CAP_PROP_FPS)
+
 # Video height and width
 height = cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
 width = cap.get(cv2.CAP_PROP_FRAME_WIDTH)
 
-# num of frames per second
-fps = cap.get(cv2.CAP_PROP_FPS)
+
 print(f'FPS : {fps:0.2f}')
 
 # pull image from video
@@ -32,7 +34,6 @@ print(f'Returned {ret} and img of shape {img.shape}')
 
 # show multiple frames from video
 def multiple_frames():
-
     fig, axs = plt.subplots(10, 10, figsize=(30, 20))
     axs = axs.flatten()
 
@@ -63,20 +64,18 @@ def display_cv2_img(img, figsize=(10, 10)):
     plt.tight_layout()
     plt.show()
 
-def get_one_frame():
 
-    n_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
-
-    for frame in range(n_frames):
+def get_one_frame(frames):
+    for frame in range(frames):
         ret, img = cap.read()
         if ret == False:
             break
-        if frame == 150: # 150, 210, 450, 900   # get one frame, number 600 for example
+        if frame == 900: # 150, 210, 450, 900   # get one frame, number 600 for example
             break
 
-    faces = face_recognition.face_locations(img)
+    # faces = face_recognition.face_locations(img)
     face_locations = face_recognition.face_locations(img, model="cnn")
-    print(face_locations)
+    # print(face_locations)
     x1 = face_locations[0][3]
     y1 = face_locations[0][2]
 
@@ -86,9 +85,9 @@ def get_one_frame():
     pt1 = (x1, y1)
     pt2 = (x2, y2)
     cv2.rectangle(img, pt1, pt2, (0, 0, 255), 3)
-
     display_cv2_img(img)
 
 
-get_one_frame()
+n_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+get_one_frame(n_frames)
 
