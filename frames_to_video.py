@@ -16,7 +16,7 @@ height, width, layers = frame.shape
 
 # Create a VideoWriter object to write the frames to a video file
 fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-video = cv2.VideoWriter('result.mp4', fourcc, extract_frames.SAVING_FRAMES_PER_SECOND, (width,height))
+video = cv2.VideoWriter('blurred_result.mp4', fourcc, extract_frames.SAVING_FRAMES_PER_SECOND, (width,height))
 
 # Loop through all the frames and add them to the video
 for filename in frame_files:

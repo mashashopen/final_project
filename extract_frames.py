@@ -96,7 +96,7 @@ if __name__ == "__main__":
     for frame in frames_files:
         retina.mask_frame(frame)
     end = time.time()
-    print(end - start)
+    print((end - start)/60)
 
 
 
